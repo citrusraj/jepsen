@@ -60,7 +60,23 @@
     (let [nodes (map ip large-partition-set)]
       (when (small-partition-set *host*)
         (doseq [n nodes]
-          (exec :iptables :-A :INPUT :-s n :-j :DROP))))))
+          (exec :iptables :-A :INPUT :-s n :-p :udp :-j :DROP :--dport 9918)
+          (exec :iptables :-A :INPUT :-s n :-p :tcp :-j :DROP :--dport 3001)
+          (exec :iptables :-A :INPUT :-s n :-p :tcp :-j :DROP :--dport 3003)
+          (exec :iptables :-A :OUTPUT :-d n :-p :udp :-j :DROP :--dport 9918)
+          (exec :iptables :-A :OUTPUT :-d n :-p :tcp :-j :DROP :--dport 3001)
+          (exec :iptables :-A :OUTPUT :-d n :-p :tcp :-j :DROP :--dport 3003)
+		)))
+    (let [nodes (map ip small-partition-set)]
+      (when (large-partition-set *host*)
+        (doseq [n nodes]
+          (exec :iptables :-A :INPUT :-s n :-p :udp :-j :DROP :--dport 9918)
+          (exec :iptables :-A :INPUT :-s n :-p :tcp :-j :DROP :--dport 3001)
+          (exec :iptables :-A :INPUT :-s n :-p :tcp :-j :DROP :--dport 3003)
+          (exec :iptables :-A :OUTPUT :-d n :-p :udp :-j :DROP :--dport 9918)
+          (exec :iptables :-A :OUTPUT :-d n :-p :tcp :-j :DROP :--dport 3001)
+          (exec :iptables :-A :OUTPUT :-d n :-p :tcp :-j :DROP :--dport 3003)
+		)))))
 
 (defn iptables-list
   []

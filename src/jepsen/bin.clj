@@ -14,6 +14,7 @@
         jepsen.mongo
         [jepsen.pg    :only [pg-app]]
         [jepsen.nuodb :only [nuodb-app]]
+        [jepsen.aerospike :only [aerospike-app]]
         [jepsen.zk    :only [zk-app]]
         [clojure.tools.cli :only [cli]]
         [jepsen.control :only [*password*]]
@@ -41,6 +42,7 @@
    "pg"                     pg-app
    "nuodb"                  nuodb-app
    "zk"                     zk-app
+   "aerospike"              aerospike-app
    "lock"                   locking-app})
 
 (def failures
